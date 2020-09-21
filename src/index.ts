@@ -1,6 +1,6 @@
 type FieldValue = string|boolean|Array<string|boolean>
 type FieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement
-type FormoeOptions = {defaultValues?:Record<string, FieldValue>; rules: Record<string, (v:FieldValue)=>string|void>}
+type FormoeOptions = {defaultValues?:Record<string, FieldValue>; rules:Record<string, (v:FieldValue) => string|void>}
 
 const instances = new WeakMap<Node, Formoe>()
 
@@ -24,7 +24,7 @@ export class Formoe {
     private _changeListeners = Object.create(null)
     private _submitters = []
 
-    constructor (form:HTMLFormElement, opts: FormoeOptions) {
+    constructor (form:HTMLFormElement, opts:FormoeOptions) {
         if (!(form instanceof HTMLFormElement)) {
             throw new TypeError('Expected "form" to be HTMLFormElement type.')
         }
@@ -84,7 +84,7 @@ export class Formoe {
 const FIELD_NAME_RE = /^(?:input|select|textarea)/i
 const BTN_TYPE_RE = /^(?:submit|button|image|reset|file)$/i
 
-function isField (el:any): el is FieldElement {
+function isField (el:any):el is FieldElement {
     return el.name && !el.disabled && FIELD_NAME_RE.test(el.nodeName) && !BTN_TYPE_RE.test(el.type)
 }
 

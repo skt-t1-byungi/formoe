@@ -4,18 +4,21 @@ export default class CheckBoxField implements Field {
     private _isTouched = false
 
     constructor (
-        private _el:HTMLInputElement,
-        onChange:(ev:Event)=>void
+        private _el:HTMLInputElement
     ) {
-        _el.addEventListener('change', (ev) => {
+    }
+
+    watch (watcher:(ev:Event) => void) {
+        this._el.addEventListener('change', (ev) => {
             this._isTouched = true
-            onChange(ev)
+            watcher(ev)
         })
     }
 
     value () {
-        if (this._el.value === 'on') return this._el.checked
-        return this._el.checked ? this._el.value : undefined
+        return this._el.value === 'on' ? this._el.checked
+            : this._el.checked ? this._el.value
+                : undefined
     }
 
     reset (val?:string|boolean) {

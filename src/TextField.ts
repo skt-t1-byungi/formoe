@@ -4,16 +4,18 @@ export default class TextField implements Field {
     private _isTouched = false
 
     constructor (
-        private _el:HTMLInputElement|HTMLTextAreaElement,
-        onChange:(ev:Event)=>void
+        private _el:HTMLInputElement|HTMLTextAreaElement
     ) {
-        _el.addEventListener('blur', (ev) => {
+    }
+
+    watch (watcher:(ev:Event) => void):void {
+        this._el.addEventListener('blur', (ev) => {
             if (!this._isTouched) {
                 this._isTouched = true
-                onChange(ev)
+                watcher(ev)
             }
         })
-        _el.addEventListener('input', onChange)
+        this._el.addEventListener('input', watcher)
     }
 
     value () {
