@@ -1,7 +1,7 @@
-export interface Field {
+export interface Field<T> {
     watch(watcher:(ev:Event) => void):void
-    value():string|boolean|Array<string|boolean>|undefined
-    reset(val?:string|boolean):void
+    value():T|undefined
+    reset(val?:T):void
     isDirty():boolean
     isTouched():boolean
 }

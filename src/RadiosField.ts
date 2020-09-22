@@ -1,7 +1,7 @@
 import noop from './noop'
 import { Field } from './types'
 
-export default class RadioField implements Field {
+export default class RadiosField implements Field<string|string[]> {
     private _isTouched = false
     private _listener:(ev:Event) => void = noop
 
@@ -39,11 +39,18 @@ export default class RadioField implements Field {
                 : values
     }
 
-    reset (val?:string|boolean) {
+    reset (val?:string|string[]) {
+        this._isTouched = false
+        if (!val) return
+
+        const map = (Array.isArray(val) ? val : [val]).reduce((o, v) => (o[v] = true, o), {} as Record<string, true>)
+        this._radios.forEach(radio => {
+            radio.checked = (map[radio.value] && delete map[radio.value]) || false
+        })
     }
 
     isDirty () {
-        // return this._radios.every(radio => radio.checked === radio.defaultChecked)
+        return this._isTouched && this._radios.some(radio => radio.checked !== radio.defaultChecked)
     }
 
     isTouched () {

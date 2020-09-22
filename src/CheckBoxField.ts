@@ -1,6 +1,6 @@
 import { Field } from './types'
 
-export default class CheckBoxField implements Field {
+export default class CheckBoxField implements Field<string|boolean> {
     private _isTouched = false
 
     constructor (
@@ -16,8 +16,9 @@ export default class CheckBoxField implements Field {
     }
 
     value () {
-        return this._el.value === 'on' ? this._el.checked
-            : this._el.checked ? this._el.value
+        const el = this._el
+        return el.value === 'on' ? el.checked
+            : el.checked ? el.value
                 : undefined
     }
 
@@ -39,7 +40,7 @@ export default class CheckBoxField implements Field {
     }
 
     isDirty () {
-        return this._isTouched && this._el.checked !== this._el.defaultChecked
+        return this._el.checked !== this._el.defaultChecked
     }
 
     isTouched () {

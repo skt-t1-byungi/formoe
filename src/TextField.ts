@@ -1,6 +1,6 @@
 import { Field } from './types'
 
-export default class TextField implements Field {
+export default class TextField implements Field<string|number> {
     private _isTouched = false
 
     constructor (
@@ -19,10 +19,11 @@ export default class TextField implements Field {
     }
 
     value () {
-        return this._el.value
+        const el = this._el
+        return el.type === 'number' ? (el as HTMLInputElement).valueAsNumber : el.value
     }
 
-    reset (val?:string|boolean) {
+    reset (val?:string|number) {
         this._isTouched = false
         if (val) this._el.defaultValue = this._el.value = String(val)
     }
