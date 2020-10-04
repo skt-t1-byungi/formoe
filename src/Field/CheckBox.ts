@@ -1,4 +1,4 @@
-import { Field } from '../types'
+import Field from './Interface'
 
 export default class CheckBoxField implements Field<string|boolean> {
     constructor (

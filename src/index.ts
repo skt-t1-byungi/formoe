@@ -1,3 +1,5 @@
+import { isEmptyObj } from './utils'
+
 type FieldValue = string|boolean|Array<string|boolean>
 type FieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement
 type FormoeOptions = {defaultValues?:Record<string, FieldValue>; rules:Record<string, (v:FieldValue) => string|void>}
@@ -36,15 +38,15 @@ export class Formoe {
     }
 
     get isDirty () {
-        return isEmpty(this._dirties)
+        return isEmptyObj(this._dirties)
     }
 
     get isTouched () {
-        return isEmpty(this._touches)
+        return isEmptyObj(this._touches)
     }
 
     get isValid () {
-        return isEmpty(this._errors)
+        return isEmptyObj(this._errors)
     }
 
     get isSubmitting () {
@@ -75,6 +77,10 @@ export class Formoe {
         return this._values
     }
 
+    get defaultValues () {
+        return this._defaultValues
+    }
+
     onChange () {}
     onSubmit () {}
     trigger () {}
@@ -86,9 +92,4 @@ const BTN_TYPE_RE = /^(?:submit|button|image|reset|file)$/i
 
 function isField (el:any):el is FieldElement {
     return el.name && !el.disabled && FIELD_NAME_RE.test(el.nodeName) && !BTN_TYPE_RE.test(el.type)
-}
-
-function isEmpty (obj:Record<string, any>) {
-    for (const _ in obj) return false
-    return true
 }

@@ -1,5 +1,5 @@
-import { Field } from '../types'
 import { toArray } from '../utils'
+import Field from './Interface'
 
 export default class SelectField implements Field <string|string[]> {
     constructor (

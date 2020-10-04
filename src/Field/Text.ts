@@ -1,4 +1,4 @@
-import { Field } from '../types'
+import Field from './Interface'
 
 export default class TextField implements Field<string|number> {
     constructor (
