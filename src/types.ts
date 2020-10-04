@@ -1,7 +1,6 @@
 export interface Field<T> {
-    watch(watcher:(ev:Event) => void):void
+    onTouched(listener:() => void):void
+    onChanged(listener:() => void):void
     value():T|undefined
-    reset(val?:T):void
-    isDirty():boolean
-    isTouched():boolean
+    reset(val:T):void
 }
