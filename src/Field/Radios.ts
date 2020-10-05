@@ -1,7 +1,7 @@
 import { noop } from '../utils'
-import Field from './Interface'
+import FieldInterface from './Interface'
 
-export default class RadiosField implements Field<string|string[]> {
+export default class RadiosField implements FieldInterface<string|string[]> {
     private _touchListener:() => void = noop
     private _changeListener:() => void = noop
 

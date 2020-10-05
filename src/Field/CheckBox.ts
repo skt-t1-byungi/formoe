@@ -1,6 +1,6 @@
-import Field from './Interface'
+import FieldInterface from './Interface'
 
-export default class CheckBoxField implements Field<string|boolean> {
+export default class CheckBoxField implements FieldInterface<string|boolean> {
     constructor (
         private _el:HTMLInputElement
     ) {

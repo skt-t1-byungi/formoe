@@ -1,6 +1,6 @@
-import Field from './Interface'
+import FieldInterface from './Interface'
 
-export default class TextField implements Field<string|number> {
+export default class TextField implements FieldInterface<string|number> {
     constructor (
         private _el:HTMLInputElement|HTMLTextAreaElement
     ) {

@@ -1,7 +1,7 @@
 import { toArray } from '../utils'
-import Field from './Interface'
+import FieldInterface from './Interface'
 
-export default class SelectField implements Field <string|string[]> {
+export default class SelectField implements FieldInterface <string|string[]> {
     constructor (
         private _el:HTMLSelectElement
     ) {
