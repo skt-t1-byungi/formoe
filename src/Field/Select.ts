@@ -1,18 +1,22 @@
-import { toArray } from '../utils'
+import { noop, toArray } from '../utils'
 import FieldInterface from './Interface'
 
 export default class SelectField implements FieldInterface <string|string[]> {
+    private _onTouched:() => void = noop
+    private _onChanged:() => void = noop
+
     constructor (
         private _el:HTMLSelectElement
     ) {
+        _el.addEventListener('change', () => {
+            this._onTouched()
+            this._onChanged()
+        })
     }
 
-    onTouched (listener:() => void) {
-        this._el.addEventListener('change', listener)
-    }
-
-    onChanged (listener:() => void) {
-        this._el.addEventListener('change', listener)
+    watch (onTouched:() => void, onChanged:() => void) {
+        this._onTouched = onTouched
+        this._onTouched = onChanged
     }
 
     value () {

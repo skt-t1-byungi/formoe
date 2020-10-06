@@ -2,39 +2,36 @@ import { noop } from '../utils'
 import FieldInterface from './Interface'
 
 export default class RadiosField implements FieldInterface<string|string[]> {
-    private _touchListener:() => void = noop
-    private _changeListener:() => void = noop
+    private _radios:HTMLInputElement[] = []
+    private _onTouched:() => void = noop
+    private _onChanged:() => void = noop
+    private _listener = () => {
+        this._onTouched()
+        this._onChanged()
+    }
 
-    constructor (
-        private _radios:HTMLInputElement[] = []
-    ) {
+    constructor (radios:HTMLInputElement[] = []) {
+        radios.forEach(radio => this.add(radio))
     }
 
     add (radio:HTMLInputElement) {
-        radio.addEventListener('change', this._touchListener)
-        radio.addEventListener('change', this._changeListener)
+        radio.addEventListener('change', this._listener)
         this._radios.push(radio)
     }
 
     remove (radio:HTMLInputElement) {
+        radio.removeEventListener('change', this._listener)
         const radios = this._radios
         radios.splice(radios.indexOf(radio) >>> 0, 1)
     }
 
-    onTouched (listener:() => void) {
-        this._radios.forEach(radio => {
-            radio.removeEventListener('change', this._touchListener)
-            radio.addEventListener('change', listener)
-        })
-        this._touchListener = listener
+    isEmpty () {
+        return this._radios.length === 0
     }
 
-    onChanged (listener:() => void) {
-        this._radios.forEach(radio => {
-            radio.removeEventListener('change', this._changeListener)
-            radio.addEventListener('change', listener)
-        })
-        this._changeListener = listener
+    watch (onTouched:() => void, onChanged:() => void) {
+        this._onTouched = onTouched
+        this._onTouched = onChanged
     }
 
     value () {

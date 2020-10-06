@@ -1,17 +1,22 @@
+import { noop } from '../utils'
 import FieldInterface from './Interface'
 
 export default class CheckBoxField implements FieldInterface<string|boolean> {
+    private _onTouched:() => void = noop
+    private _onChanged:() => void = noop
+
     constructor (
         private _el:HTMLInputElement
     ) {
+        _el.addEventListener('change', () => {
+            this._onTouched()
+            this._onChanged()
+        })
     }
 
-    onTouched (listener:() => void) {
-        this._el.addEventListener('change', listener)
-    }
-
-    onChanged (listener:() => void) {
-        this._el.addEventListener('change', listener)
+    watch (onTouched:() => void, onChanged:() => void) {
+        this._onTouched = onTouched
+        this._onTouched = onChanged
     }
 
     value () {

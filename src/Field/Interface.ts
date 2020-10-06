@@ -1,6 +1,5 @@
 export default interface FieldInterface<T> {
-    onTouched(listener:() => void):void
-    onChanged(listener:() => void):void
+    watch(onTouched:() => void, onChanged:() => void):void
     value():T|undefined
     reset(val:T):void
 }
