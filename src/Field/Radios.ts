@@ -3,15 +3,12 @@ import FieldInterface from './Interface'
 
 export default class RadiosField implements FieldInterface<string|string[]> {
     private _radios:HTMLInputElement[] = []
+
     private _onTouched:() => void = noop
     private _onChanged:() => void = noop
     private _listener = () => {
         this._onTouched()
         this._onChanged()
-    }
-
-    constructor (radios:HTMLInputElement[] = []) {
-        radios.forEach(radio => this.add(radio))
     }
 
     add (radio:HTMLInputElement) {
