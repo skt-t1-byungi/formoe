@@ -1,20 +1,18 @@
-import CheckBoxField from './Field/CheckBox'
-import FieldInterface from './Field/Interface'
-import RadiosField from './Field/Radios'
-import SelectField from './Field/Select'
-import TextField from './Field/Text'
+import { FieldElement, FieldValue } from '../types'
+import { noop, remove } from '../utils'
+import CheckBoxField from './CheckBox'
+import FieldInterface from './Interface'
+import RadiosField from './Radios'
+import SelectField from './Select'
+import TextField from './Text'
 
-type FieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement
-
-export default class FieldManager {
+export default class Mixed implements FieldInterface<FieldValue[]> {
     private _fields:Array<FieldInterface<any>> = []
     private _fieldMap = new Map<FieldElement, FieldInterface<any>>()
     private _radioField:RadiosField|null = null
-    private _value:any = null
-    private _isTouched = false
 
-    private _onTouched = () => { this._isTouched = true }
-    private _onChanged = () => { this._value = null }
+    private _onTouched:() => void = noop
+    private _onChanged:() => void = noop
 
     register (el:FieldElement) {
         if (el instanceof HTMLInputElement && el.type === 'radio') {
@@ -52,28 +50,20 @@ export default class FieldManager {
             this._radioField = null
         }
 
-        const fields = this._fields
-        fields.splice(fields.indexOf(field) >>> 0, 1)
+        remove(this._fields, field)
     }
 
-    getField (el:FieldElement) {
-        return this._fieldMap.get(el)
+    watch (onTouched:() => void, onChanged:() => void) {
+        this._onTouched = onTouched
+        this._onChanged = onChanged
     }
 
     value () {
-        if (this._value !== null) return this._value
-
         const values = this._fields.map(field => field.value()).filter(v => v !== undefined)
-        return this._value = values.length > 1 ? values : values[0]
+        return values.length > 1 ? values : values[0]
     }
 
-    reset () {}
-
-    get isTouched () {
-        return this._isTouched
-    }
-
-    get isDirty () {
-        // return this._isDirty
+    reset (values:FieldValue[]) {
+        values.forEach((val, i) => this._fields[i].reset(val))
     }
 }

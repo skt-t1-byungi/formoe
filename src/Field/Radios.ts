@@ -1,4 +1,4 @@
-import { noop } from '../utils'
+import { noop, remove } from '../utils'
 import FieldInterface from './Interface'
 
 export default class RadiosField implements FieldInterface<string|string[]> {
@@ -18,8 +18,7 @@ export default class RadiosField implements FieldInterface<string|string[]> {
 
     remove (radio:HTMLInputElement) {
         radio.removeEventListener('change', this._listener)
-        const radios = this._radios
-        radios.splice(radios.indexOf(radio) >>> 0, 1)
+        remove(this._radios, radio)
     }
 
     isEmpty () {
@@ -28,7 +27,7 @@ export default class RadiosField implements FieldInterface<string|string[]> {
 
     watch (onTouched:() => void, onChanged:() => void) {
         this._onTouched = onTouched
-        this._onTouched = onChanged
+        this._onChanged = onChanged
     }
 
     value () {

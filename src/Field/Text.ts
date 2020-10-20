@@ -14,7 +14,7 @@ export default class TextField implements FieldInterface<string|number> {
 
     watch (onTouched:() => void, onChanged:() => void) {
         this._onTouched = onTouched
-        this._onTouched = onChanged
+        this._onChanged = onChanged
     }
 
     value () {

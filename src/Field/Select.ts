@@ -16,7 +16,7 @@ export default class SelectField implements FieldInterface <string|string[]> {
 
     watch (onTouched:() => void, onChanged:() => void) {
         this._onTouched = onTouched
-        this._onTouched = onChanged
+        this._onChanged = onChanged
     }
 
     value () {
