@@ -1,5 +1,5 @@
 import { noop } from '../utils'
-import FieldInterface from './Interface'
+import FieldInterface from './FieldInterface'
 
 export default class TextField implements FieldInterface<string|number> {
     private _onTouched:() => void = noop

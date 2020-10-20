@@ -1,4 +1,4 @@
-import MixedField from './Field/Mixed'
+import MixedField from './Field/MixedField'
 import { FieldElement, FieldValue, FormValue } from './types'
 import { noop } from './utils'
 

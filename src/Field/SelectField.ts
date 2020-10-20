@@ -1,5 +1,5 @@
 import { noop, toArray } from '../utils'
-import FieldInterface from './Interface'
+import FieldInterface from './FieldInterface'
 
 export default class SelectField implements FieldInterface <string|string[]> {
     private _onTouched:() => void = noop

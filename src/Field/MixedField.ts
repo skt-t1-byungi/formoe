@@ -1,12 +1,12 @@
 import { FieldElement, FieldValue } from '../types'
 import { noop, remove } from '../utils'
-import CheckBoxField from './CheckBox'
-import FieldInterface from './Interface'
-import RadiosField from './Radios'
-import SelectField from './Select'
-import TextField from './Text'
+import CheckBoxField from './CheckBoxField'
+import FieldInterface from './FieldInterface'
+import RadiosField from './RadiosField'
+import SelectField from './SelectField'
+import TextField from './TextField'
 
-export default class Mixed implements FieldInterface<FieldValue[]> {
+export default class MixedField implements FieldInterface<FieldValue[]> {
     private _fields:Array<FieldInterface<any>> = []
     private _fieldMap = new Map<FieldElement, FieldInterface<any>>()
     private _radioField:RadiosField|null = null

@@ -1,5 +1,5 @@
 import { noop, remove } from '../utils'
-import FieldInterface from './Interface'
+import FieldInterface from './FieldInterface'
 
 export default class RadiosField implements FieldInterface<string|string[]> {
     private _radios:HTMLInputElement[] = []
