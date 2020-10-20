@@ -1,4 +1,4 @@
-import { isEmptyObj } from './utils'
+import { isEmpty } from './utils'
 
 type FieldValue = string|boolean|Array<string|boolean>
 type FieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement
@@ -38,15 +38,15 @@ export class Formoe {
     }
 
     get isDirty () {
-        return isEmptyObj(this._dirties)
+        return isEmpty(this._dirties)
     }
 
     get isTouched () {
-        return isEmptyObj(this._touches)
+        return isEmpty(this._touches)
     }
 
     get isValid () {
-        return isEmptyObj(this._errors)
+        return isEmpty(this._errors)
     }
 
     get isSubmitting () {

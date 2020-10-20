@@ -53,6 +53,10 @@ export default class Mixed implements FieldInterface<FieldValue[]> {
         remove(this._fields, field)
     }
 
+    isEmpty () {
+        return this._fields.length === 0
+    }
+
     watch (onTouched:() => void, onChanged:() => void) {
         this._onTouched = onTouched
         this._onChanged = onChanged
