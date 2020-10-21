@@ -2,19 +2,28 @@ import { noop } from '../utils'
 import FieldInterface from './FieldInterface'
 
 export default class TextField implements FieldInterface<string|number> {
-    private _onTouched:() => void = noop
-    private _onChanged:() => void = noop
+    private _unwatch = noop
 
     constructor (
         private _el:HTMLInputElement|HTMLTextAreaElement
     ) {
-        this._el.addEventListener('blur', () => this._onTouched())
-        this._el.addEventListener('input', () => this._onChanged())
     }
 
     watch (onTouched:() => void, onChanged:() => void) {
-        this._onTouched = onTouched
-        this._onChanged = onChanged
+        this._unwatch()
+
+        const el = this._el
+        el.addEventListener('blur', onTouched)
+        el.addEventListener('input', onChanged)
+
+        this._unwatch = () => {
+            el.removeEventListener('blur', onTouched)
+            el.removeEventListener('input', onChanged)
+        }
+    }
+
+    release () {
+        this._unwatch()
     }
 
     value () {

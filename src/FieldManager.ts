@@ -1,30 +1,37 @@
-import { FieldElement, FieldValue } from '../types'
-import { noop, remove } from '../utils'
-import CheckBoxField from './CheckBoxField'
-import FieldInterface from './FieldInterface'
-import RadiosField from './RadiosField'
-import SelectField from './SelectField'
-import TextField from './TextField'
+import CheckBoxField from './Field/CheckBoxField'
+import FieldInterface from './Field/FieldInterface'
+import RadioField from './Field/RadioField'
+import SelectField from './Field/SelectField'
+import TextField from './Field/TextField'
+import { FieldElement, FieldValue } from './types'
+import { remove } from './utils'
 
-export default class MixedField implements FieldInterface<FieldValue[]> {
+export default class FieldManager {
     private _fields:Array<FieldInterface<any>> = []
+    private _radios:RadioField[] = []
     private _fieldMap = new Map<FieldElement, FieldInterface<any>>()
-    private _radioField:RadiosField|null = null
 
-    private _onTouched:() => void = noop
-    private _onChanged:() => void = noop
+    constructor (
+        private _onChanged:() => void,
+        private _onTouched:() => void
+    ) {
+    }
 
     register (el:FieldElement) {
-        if (el instanceof HTMLInputElement && el.type === 'radio') {
-            const field = this._radioField ?? new RadiosField()
-            field.add(el)
-            this._fieldMap.set(el, field)
+        const fields = this._fields
+        const fieldMap = this._fieldMap
 
-            if (!this._radioField) {
-                this._fields.push(this._radioField = field)
-                field.watch(this._onTouched, this._onChanged)
+        if (el instanceof HTMLInputElement && el.type === 'radio') {
+            let radios:RadiosField|null = null
+            if (fields.length === 1 && fields[0] instanceof RadiosField) {
+                radios = fields[0] as RadiosField
+            } else {
+                fields.push(radios = new RadiosField())
+                radios.watch(this._onTouched, this._onChanged)
             }
 
+            radios.add(el)
+            fieldMap.set(el, radios)
             return
         }
 
@@ -36,8 +43,8 @@ export default class MixedField implements FieldInterface<FieldValue[]> {
                     ? new CheckBoxField(el)
                     : new TextField(el)
 
-        this._fields.push(field)
-        this._fieldMap.set(el, field)
+        fields.push(field)
+        fieldMap.set(el, field)
         field.watch(this._onTouched, this._onChanged)
     }
 
@@ -55,11 +62,6 @@ export default class MixedField implements FieldInterface<FieldValue[]> {
 
     isEmpty () {
         return this._fields.length === 0
-    }
-
-    watch (onTouched:() => void, onChanged:() => void) {
-        this._onTouched = onTouched
-        this._onChanged = onChanged
     }
 
     value () {
