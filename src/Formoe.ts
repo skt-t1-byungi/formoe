@@ -17,7 +17,6 @@ export default class Formoe {
     private _fieldMapByEl = new Map<FieldElement, FieldInterface<any>>()
     private _fieldsMapByName = new Map<string, Array<FieldInterface<any>>>()
     private _ruleMap = new Map<string, (val:FieldValue, values:Record<string, FieldValue>) => string|void>()
-    private _inInitialized = false
     private _submitCount = 0
     private _isSubmitting = false
     private _isSubmitted = false
@@ -39,14 +38,17 @@ export default class Formoe {
     ) {
         Array.from<FieldElement>(form.querySelectorAll('[name]:not(:disabled)'))
             .filter(el => FIELD_NAME_RE.test(el.nodeName) && !PREVENT_TYPE_RE.test(el.type))
-            .forEach(el => this.register(el as FieldElement))
+            .forEach(el => this._register(el))
 
         Array.from(this._fieldsMapByName.keys()).map(name => this._update(name))
-
-        this._inInitialized = true
     }
 
     register (el:FieldElement) {
+        this._register(el)
+        this._update(el.name)
+    }
+
+    private _register (el:FieldElement) {
         const fieldMap = this._fieldMapByEl
         if (fieldMap.has(el)) {
             throw new TypeError('This element is already registered.')
@@ -79,8 +81,6 @@ export default class Formoe {
             () => {
                 this._update(name)
             })
-
-        if (this._inInitialized) this._update(name)
     }
 
     private _update (name:string) {
