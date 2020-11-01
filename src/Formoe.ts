@@ -41,6 +41,7 @@ export default class Formoe {
             .forEach(el => this._register(el))
 
         Array.from(this._fieldsMapByName.keys()).map(name => this._update(name))
+        Object.assign(this._defaultValues, this._value)
     }
 
     register (el:FieldElement) {
@@ -132,5 +133,8 @@ export default class Formoe {
             value: this._values[name],
             defaultValue: this._defaultValues[name]
         }
+    }
+
+    reset (newValues:Record<string, FieldValue> = this._defaultValues) {
     }
 }
