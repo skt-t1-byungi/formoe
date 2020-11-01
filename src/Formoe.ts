@@ -61,7 +61,8 @@ export default class Formoe {
                 ? new SelectField(el)
                 : el.type === 'checkbox' || el.type === 'radio'
                     ? new ToggleField(el)
-                    : el instanceof HTMLTextAreaElement ? new TextField(el)
+                    : el instanceof HTMLTextAreaElement
+                        ? new TextField(el)
                         : null
 
         if (!newField) {
